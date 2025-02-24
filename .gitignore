@@ -1,0 +1,50 @@
+# Node modules/
+node_modules/
+
+# Build output
+/.next/
+/dist/
+
+# TypeScript artifacts
+*.tsbuildinfo
+*.d.ts
+
+# Logs
+logs/
+
+# Environment files
+.env
+.env.development
+.env.production
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE or Editor folders
+.vscode/
+.idea/
+
+# Next.js static files
+out/
+
+# Yarn lock files (if using npm instead of Yarn)
+yarn-debug.log*
+yarn-error.log*
+
+# NPM lock file (if you use npm instead of Yarn)
+package-lock.json
+
+# TypeScript and IDE settings
+*.tsbuildinfo
+*.vscode/
+
+# Coverage folder for testing
+coverage/
+
+# Jest
+jest/
+
+# Mac system files
+*.swp
+*.swo
