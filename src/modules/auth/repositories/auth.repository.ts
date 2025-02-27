@@ -88,11 +88,8 @@ export class AuthRepository implements IAuthRepository {
           firstName : true,
           lastName : true,
           email : true,
-          roles : {
-            select:{
-              name : true,
-            }
-          },
+          role : true,
+          warehouse : true,
         },
        
     });
@@ -106,11 +103,7 @@ export class AuthRepository implements IAuthRepository {
         firstName : true,
         lastName : true,
         email : true,
-        roles : {
-          select:{
-            name : true,
-          }
-        }
+        role : true
       }
     });
     return user;

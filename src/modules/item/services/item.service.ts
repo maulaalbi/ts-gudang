@@ -16,10 +16,15 @@ export class ItemService implements IItemService {
     @inject(TYPES.ItemRepository) private ItemRepossitory: IItemRepository,
   ) {}
 
-  async createItem(ItemDto: Item): Promise<Item> {
+  async createItem(ItemDto: Item,userData :any): Promise<Item> {
     try {
       const warehouse = await prisma.warehouse.findUnique({
-        where: { public_warehouse_id : ItemDto.warehouseId },
+        where: { 
+          public_warehouse_id : ItemDto.warehouseId
+         },select : {
+          adminGudangId : true,
+          name : true
+         }
       });
   
       if (!warehouse) {
@@ -28,8 +33,23 @@ export class ItemService implements IItemService {
         );
         throw new ConflictError('warehouse not found');
       }
+      const admin = await prisma.user.findUnique({
+        where : {
+          id : userData.id
+        },select : {
+          user_public_id : true
+        }
+      });
+
+      if(admin?.user_public_id !== warehouse.adminGudangId){
+        logger.error(
+          `[Service - create Item] Error : user not admin ${warehouse?.name} => ${JSON.stringify(admin)}`,
+        );
+        throw new ConflictError('user not admin' , warehouse?.name);
+      }
+
       // hit db
-      const newItem = await this.ItemRepossitory.createItem(ItemDto as Item);
+      const newItem = await this.ItemRepossitory.createItem(ItemDto as Item,userData);
       logger.info(
         `[Service - create Item] Success create Item with this data ${JSON.stringify(newItem)}`,
       );

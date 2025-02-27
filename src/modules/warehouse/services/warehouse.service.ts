@@ -7,8 +7,6 @@ import { ValidationError } from '../../../common/error-handler/validation-error'
 import { IWarehouseService } from '../interfaces/warehouse.service.interface';
 import { IWarehouseRepository } from '../interfaces/warehouse.repository.interface';
 import { convertErrorValidationToList } from '../../../helper/converter/convertErrorValidationToList';
-import { prisma } from '../../../config/prisma';
-import { ConflictError } from '../../../common/error-handler/conflict-error';
 
 @injectable()
 export class WarehouseService implements IWarehouseService {
@@ -18,16 +16,7 @@ export class WarehouseService implements IWarehouseService {
 
   async createWarehouse(WarehouseDto: any): Promise<any> {
     try {
-      const kepalaUser = await prisma.user.findUnique({
-        where: { user_public_id: WarehouseDto.kepalaId },
-      });
   
-      if (!kepalaUser) {
-        logger.error(
-          `[Service - warehouse] Error : kepala not found => ${JSON.stringify(kepalaUser)}`,
-        );
-        throw new ConflictError('kepala not found');
-      }
       // hit db
       const newWarehouse = await this.WarehouseRepossitory.createWarehouse(WarehouseDto as Warehouse);
       logger.info(

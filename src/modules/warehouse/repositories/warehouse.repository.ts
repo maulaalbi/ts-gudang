@@ -10,12 +10,11 @@ export class WarehouseRepository implements IWarehouseRepository {
 
   async createWarehouse(newWarehouse: any): Promise<any> {
     
-  
-    
     const warehouse = await prisma.warehouse.create({
       data: {
         name : newWarehouse.name,
         location : newWarehouse.location,
+        adminGudangId : newWarehouse.adminGudangId
       },
       omit: {
         id: true,
@@ -29,20 +28,31 @@ export class WarehouseRepository implements IWarehouseRepository {
 
   async getWarehouse() : Promise<any> {
     const warehouses = await prisma.warehouse.findMany({
-      include: {
-        item: true, // Memuat data item yang dimiliki warehouse ini
+
+      select: {
+        name:true,
+        location:true,
+        createdAt:true,
+        updatedAt:true,
+        adminGudang :{
+          select: {
+            firstName : true,
+            lastName : true,
+            email: true,
+          },
+        } ,
+        item : {
+          select:{
+            public_item_id : true,
+            name : true,
+            description : true,
+            stock :true
+          }
+        },  // Memuat data item yang dimiliki warehouse ini
       },
     });
     
-    // const result = warehouses.map((warehouse) => ({
-    //   publicWarehouseId: warehouse.public_warehouse_id,
-    //   name: warehouse.name,
-    //   location: warehouse.location,
-    //   kepalaName: `${warehouse.kepala?.firstName} ${warehouse.kepala?.lastName}`, // Gabungkan nama depan & belakang
-    //   itemName : warehouse.item
-    //   createdAt: warehouse.createdAt,
-    //   updatedAt: warehouse.updatedAt,
-    // }));
+ 
 
     return warehouses;
     

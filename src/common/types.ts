@@ -15,5 +15,8 @@ export const TYPES = {
    ItemInController: Symbol.for('ItemInController'),
    ItemInService: Symbol.for('ItemInService'),
    ItemInRepository: Symbol.for('ItemInRepository'),
+   ItemOutController: Symbol.for('ItemOutController'),
+   ItemOutService: Symbol.for('ItemOutService'),
+   ItemOutRepository: Symbol.for('ItemOutRepository'),
   };
   

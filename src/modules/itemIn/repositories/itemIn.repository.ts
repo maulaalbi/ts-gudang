@@ -8,14 +8,11 @@ import { IItemInRepository } from '../interfaces/itemIn.repository.interface';
 export class ItemInRepository implements IItemInRepository {
 
 
-  async createItemIn(newItemIn: ItemIn): Promise<ItemIn> {
-
-    
+  async createItemIn(newItemIn: ItemIn,userData :any): Promise<ItemIn> {
 
     const ItemIn = await prisma.itemIn.create({
       data:{
         itemId: newItemIn.itemId, // ID item
-        adminGudangId: newItemIn.adminGudangId,
         quantity : newItemIn.quantity
       }
     });
@@ -37,32 +34,18 @@ export class ItemInRepository implements IItemInRepository {
       },
       data: {
         stock : quantitySum,
-      },select :{
-        warehouseId : true
       }
     });
 
-  
-  
-   
 
     return ItemIn as ItemIn;
   }
 
   async getItemIn() : Promise<any> {
     const ItemsIn = await prisma.itemIn.findMany({
-      
+
     });
     
-    // const result = ItemsIn.map((itemIn) => ({
-    //   publicItemInId: itemIn.public_itemsIn_id,
-    //   itemName : itemIn.item.name,
-    //   quantity : itemIn.quantity,
-    //   itemDescription : itemIn.item.description,
-    //   createdAt : itemIn.timestamp
-
-    // }));
-
     return ItemsIn;
     
   }

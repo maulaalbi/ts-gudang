@@ -16,8 +16,9 @@ export class ItemInController {
     next: NextFunction,
   ): Promise<void> {
     const ItemInRegisterDto: ItemIn = req.body;
+    const userData = res.locals.userData;
     try {
-      const itemIn = await this.ItemInService.createItemIn(ItemInRegisterDto);
+      const itemIn = await this.ItemInService.createItemIn(ItemInRegisterDto,userData);
       const successData = createSuccessResponse<ItemIn>(itemIn, 'Register Item success');
       res.status(201).json(successData);
     } catch (err: any) {

@@ -8,7 +8,7 @@ import { IItemRepository } from '../interfaces/item.repository.interface';
 export class ItemRepository implements IItemRepository {
 
 
-  async createItem(newItem: Item): Promise<Item> {
+  async createItem(newItem: Item,userData :any): Promise<Item> {
     const Item = await prisma.item.create({
       data: newItem,
       omit: {
@@ -23,22 +23,12 @@ export class ItemRepository implements IItemRepository {
 
   async getItem() : Promise<any> {
     const Items = await prisma.item.findMany({
-      include : {
-        
-        itemIn : true
-        
+      include:{
+        itemIn : true,
+        itemOut : true,
       }
     });
     
-    // const result = Items.map((item) => ({
-    //   publicItemId: item.public_item_id,
-    //   name: item.name,
-    //   description: item.description,
-    //   stock: item.stock,
-    //   warehouseName: item.warehouse?.name, // Ambil nama warehouse
-    //   kepalaName: `${item.warehouse?.kepala?.firstName} ${item.warehouse?.kepala?.lastName}`, // Ambil nama kepala warehouse
-    //   location : item.warehouse?.location,
-    // }));
 
     return Items;
     

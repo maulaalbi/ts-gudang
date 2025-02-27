@@ -21,57 +21,39 @@ id               Int       @id @default(autoincrement())
   lastName         String
   email            String    @unique
   password         String
-  user_role_id     String
+  role             String
   created_at       DateTime  @default(now())
   updated_at       DateTime  @updatedAt
-
-  roles            Role      @relation(fields: [user_role_id], references: [role_id])
+  
 
 
 
   @@map("users")
+  warehouse Warehouse[] @relation(name: "AdminGudang")
 }
 
-model Admin {
-  id               Int       @id @default(autoincrement())
-  user_public_id   String    @unique @default(uuid())
-  firstName        String
-  lastName         String
-  email            String    @unique
-  password         String
-  user_role_id     String
-  created_at       DateTime  @default(now())
-  updated_at       DateTime  @updatedAt
+model Warehouse {
+  id                   Int       @id @default(autoincrement())
+  public_warehouse_id  String    @unique @default(uuid())
+  name                 String
+  location             String
+  adminGudangId  String     // Relasi ke Admin Gudang yang mencatat
+  adminGudang    User       @relation(fields: [adminGudangId], references: [user_public_id], name: "AdminGudang")
+  item                 Item[]
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
-  roles            Role      @relation(fields: [user_role_id], references: [role_id])
-
-
-  itemOut     ItemOut[] @relation("AdminBarangKeluar") // Relasi balik ke BarangKeluar
-  itemIn      ItemIn[]  @relation("AdminBarangMasuk")  // Relasi balik ke BarangMasuk
-
-  @@map("admin")
+  @@map("warehouses")
 }
 
-model Role {
-  id              Int        @id @default(autoincrement())
-  role_id        String       @unique @default(uuid())
-  name           String       
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
-  users           User[]
-  admin           Admin[]
 
 
-  @@map("roles")
-}
 
 model ItemOut {
   id             Int       @id @default(autoincrement())
   public_itemsOut_id String   @unique @default(uuid())
   itemId       String        // Relasi ke Barang
   item         Item     @relation(fields: [itemId], references: [public_item_id])
-  adminGudangId  String     // Relasi ke Admin Gudang yang mencatat
-  adminGudang    Admin       @relation(fields: [adminGudangId], references: [user_public_id], name: "AdminBarangKeluar")
   quantity       Int        // Jumlah barang keluar
   timestamp      DateTime   @default(now())
   
@@ -84,8 +66,6 @@ model ItemIn {
   public_itemsIn_id String   @unique @default(uuid())
   itemId      String        // Relasi ke Barang
   item        Item     @relation(fields: [itemId], references: [public_item_id])
-  adminGudangId String     // Relasi ke Admin Gudang yang mencatat
-  adminGudang   Admin       @relation(fields: [adminGudangId], references: [user_public_id], name: "AdminBarangMasuk")
   quantity      Int        // Jumlah barang masuk
   timestamp     DateTime   @default(now())
 
@@ -106,15 +86,5 @@ model Item {
   @@map("items")
 }
 
-model Warehouse {
-  id                   Int       @id @default(autoincrement())
-  public_warehouse_id  String    @unique @default(uuid())
-  name                 String
-  location             String
-  item                 Item[]
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
 
-  @@map("warehouses")
-}
 

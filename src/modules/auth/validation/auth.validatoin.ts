@@ -5,7 +5,7 @@ export const registerValidation = z.object({
   lastName: z.optional(z.string({ required_error: 'Name is required' })),
   email: z.string({ required_error: 'email is required' }),
   password: z.string({ required_error: 'password is required' }),
-  user_role_id: z.string({ required_error: 'password is required' }),
+  role: z.string({ required_error: 'password is required' }),
 
 });
 
